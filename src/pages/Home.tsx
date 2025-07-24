@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import { spotifyLogin } from '@/api/spotify';
 
 export default function Home() {
   return (
@@ -60,6 +61,7 @@ export default function Home() {
           derivative crypto exchanges.
         </Typography>
         <Button
+          onClick={() => spotifyLogin()}
           sx={{
             background: 'linear-gradient(90deg, #4F8CFF 0%, #FFD580 100%)',
             color: '#fff',

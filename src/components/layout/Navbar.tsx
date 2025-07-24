@@ -3,6 +3,7 @@ import Logo from '@/components/icons/Logo';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from 'lucide-react';
+import { Outlet } from 'react-router-dom';
 
 import {
   NavigationMenu,
@@ -214,6 +215,7 @@ export default function Navbar() {
           </button>
         </div>
       </div>
+      <Outlet />
     </>
   );
 }
