@@ -1,8 +1,7 @@
-// Spotify API service functions
+import { getApiUrl } from "@/lib/utils";
 
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://vl-backend-production.up.railway.app'
-  : 'http://127.0.0.1:5050';
+const API_BASE_URL = getApiUrl();
+console.log("API_BASE_URL IS", API_BASE_URL)
 
 // Types
 export interface SpotifyTokens {

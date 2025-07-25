@@ -1,8 +1,10 @@
+import { useState } from 'react';
+
 import GradientButton from '@/components/base/GradientButton';
 import Logo from '@/components/icons/Logo';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from 'lucide-react';
+import { CircleCheckIcon, CircleHelpIcon, CircleIcon, Menu, X } from 'lucide-react';
 import { Outlet } from 'react-router-dom';
 
 import {
@@ -54,16 +56,26 @@ const components: { title: string; href: string; description: string }[] = [
 ];
 
 export default function Navbar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <>
-      <div className='flex flex-row items-center justify-around w-full max-w-[1400px] py-5'>
+      <div className='flex flex-row items-center justify-between w-full max-w-[1400px] py-5 px-4 md:px-6'>
         {/* Logo */}
         <div className='relative'>
           <Logo width='40' height='40' />
         </div>
 
-        {/* Actual nav menu */}
-        <NavigationMenu viewport={true} className='bg-[#14161a] text-white'>
+        {/* Desktop Navigation Menu */}
+        <NavigationMenu viewport={true} className='bg-[#14161a] text-white hidden md:block'>
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger>Home</NavigationMenuTrigger>
@@ -205,7 +217,7 @@ export default function Navbar() {
           </NavigationMenuList>
         </NavigationMenu>
 
-        {/* Login/Signup */}
+        {/* Desktop Login/Signup */}
         <div className='hidden md:flex justify-end gap-2'>
           <GradientButton fromColor='#CB3CFF' toColor='#7F25FB'>
             Login
@@ -214,7 +226,120 @@ export default function Navbar() {
             Sign Up
           </button>
         </div>
+
+        {/* Mobile Hamburger Menu Button */}
+        <button
+          onClick={toggleMobileMenu}
+          className='md:hidden p-2 text-white hover:bg-gray-800 rounded-lg transition-colors'
+          aria-label='Toggle mobile menu'
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className='md:hidden fixed inset-0 z-50 bg-black bg-opacity-50' onClick={closeMobileMenu}>
+          <div 
+            className='absolute top-0 right-0 w-80 h-full bg-[#14161a] shadow-xl transform transition-transform duration-300 ease-in-out'
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className='flex flex-col h-full'>
+              {/* Mobile Menu Header */}
+              <div className='flex items-center justify-between p-6 border-b border-gray-700'>
+                <span className='text-white font-semibold text-lg'>Menu</span>
+                <button
+                  onClick={closeMobileMenu}
+                  className='p-2 text-white hover:bg-gray-800 rounded-lg transition-colors'
+                  aria-label='Close mobile menu'
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Mobile Navigation Items */}
+              <div className='flex-1 overflow-y-auto p-6'>
+                <nav className='space-y-4'>
+                  {/* About Section */}
+                  <div className='mb-6'>
+                    <h3 className='text-white font-semibold text-lg mb-3'>About</h3>
+                    <p className='text-gray-300 text-sm leading-relaxed'>
+                      Vibelog is a beautiful, minimalist mood journal that syncs with your Spotify listening 
+                      and generates personal music + mood trends. Track your emotions through music without 
+                      the chore of traditional journaling.
+                    </p>
+                  </div>
+
+                  {/* Navigation Links */}
+                  <div className='space-y-2'>
+                    <Link 
+                      to='/' 
+                      className='block text-white hover:text-gray-300 py-2 transition-colors'
+                      onClick={closeMobileMenu}
+                    >
+                      Home
+                    </Link>
+                    <Link 
+                      to='/docs' 
+                      className='block text-white hover:text-gray-300 py-2 transition-colors'
+                      onClick={closeMobileMenu}
+                    >
+                      Docs
+                    </Link>
+                    <Link 
+                      to='#' 
+                      className='block text-white hover:text-gray-300 py-2 transition-colors'
+                      onClick={closeMobileMenu}
+                    >
+                      Components
+                    </Link>
+                    <Link 
+                      to='#' 
+                      className='block text-white hover:text-gray-300 py-2 transition-colors'
+                      onClick={closeMobileMenu}
+                    >
+                      List
+                    </Link>
+                    <Link 
+                      to='#' 
+                      className='block text-white hover:text-gray-300 py-2 transition-colors'
+                      onClick={closeMobileMenu}
+                    >
+                      Simple
+                    </Link>
+                    <Link 
+                      to='#' 
+                      className='block text-white hover:text-gray-300 py-2 transition-colors'
+                      onClick={closeMobileMenu}
+                    >
+                      With Icon
+                    </Link>
+                  </div>
+                </nav>
+              </div>
+
+              {/* Mobile Login/Signup Buttons */}
+              <div className='p-6 border-t border-gray-700 space-y-3'>
+                <GradientButton 
+                  fromColor='#CB3CFF' 
+                  toColor='#7F25FB'
+                  className='w-full'
+                  onClick={closeMobileMenu}
+                >
+                  Login
+                </GradientButton>
+                <button 
+                  className='w-full px-4 py-2 rounded bg-blue-600 text-white font-medium hover:bg-blue-700 transition'
+                  onClick={closeMobileMenu}
+                >
+                  Sign Up
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Outlet />
     </>
   );
