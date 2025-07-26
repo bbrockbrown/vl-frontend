@@ -2,6 +2,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children?: React.ReactNode;
     className?: string;
     color?: string;
+    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
-declare const Button: React.FC<ButtonProps>;
+declare const Button: (props: ButtonProps) => JSX.Element;
 export default Button;

@@ -183,20 +183,17 @@ body {
   line-height: 1.5;
 }
 
-/* 2. Responsive images and videos */
 img, video {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-/* 3. Margin/padding reset */
 body, h1, h2, h3, h4, h5, h6, p, ul, ol, figure {
   margin: 0;
   padding: 0;
 }
 
-/* 4. Light mode override */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

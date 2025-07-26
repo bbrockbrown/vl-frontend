@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { spotifyLogin } from '@/api/spotify';
 import Footer from '@/components/layout/Footer';
+import GradientButton from '@/components/base/GradientButton';
 
 export default function Home() {
   return (
@@ -27,6 +27,11 @@ export default function Home() {
             pb: 10,
           }}
         >
+          {/* <img 
+            className="absolute top-0 left-0 w-full h-auto z-[-1]"
+            src={require('@/assets/big_clear_blob.png')}
+            alt="Background blob"
+          /> */}
           <Typography
             variant='h2'
             sx={{
@@ -37,7 +42,7 @@ export default function Home() {
               textAlign: 'center',
             }}
           >
-            Balancing
+            Track Your Mood
           </Typography>
           <Typography
             variant='h2'
@@ -48,7 +53,7 @@ export default function Home() {
               textAlign: 'center',
             }}
           >
-            Crypto Markets
+            Through Music
           </Typography>
           <Typography
             variant='subtitle1'
@@ -59,27 +64,17 @@ export default function Home() {
               color: 'rgba(255,255,255,0.85)',
             }}
           >
-            Our fully automated proprietary quantitative trading software
-            provides 24/7 liquidity to 170+ crypto assets across 25+ centralized
-            spot and derivative crypto exchanges.
+            A beautiful, minimalist mood journal that syncs with your Spotify
+            listening and generates personal music + mood trends. Track your
+            emotions through music without the chore of traditional journaling.
           </Typography>
-          <Button
+          <GradientButton
             onClick={() => spotifyLogin()}
-            sx={{
-              background: 'linear-gradient(90deg, #4F8CFF 0%, #FFD580 100%)',
-              color: '#fff',
-              fontWeight: 600,
-              px: 4,
-              py: 1.5,
-              fontSize: 18,
-              borderRadius: 2,
-              boxShadow: '0 2px 8px 0 rgba(79,140,255,0.15)',
-              textTransform: 'none',
-              mb: 2,
-            }}
+            fromColor='#ca3dfd'
+            toColor='#10c3ff'
           >
-            GET IN TOUCH
-          </Button>
+            CONNECT WITH SPOTIFY
+          </GradientButton>
         </Box>
         {/* About Section */}
         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 8, mb: 6 }}>
@@ -87,30 +82,29 @@ export default function Home() {
             variant='h4'
             sx={{ fontWeight: 700, mb: 2, textAlign: 'center' }}
           >
-            About Gravity Team
+            About Vibelog
           </Typography>
           <Typography
             variant='body1'
             sx={{ color: 'rgba(255,255,255,0.85)', mb: 6, textAlign: 'center' }}
           >
-            At Gravity Team, we are on the mission to balance the supply and
-            demand across crypto markets worldwide. We are a crypto native
-            market maker founded by traders, developers, and innovators who are
-            strong believers and supporters of the future of decentralization
-            and digital assets.
+            Vibelog combines something Gen Z already does (listen to music) with
+            a gentle journaling flow. Generate insights that feel personal,
+            aesthetic, and emotional. Perfect for people who want to track
+            feelings but don't want to "write a diary".
           </Typography>
           {/* Stats Grid */}
           <Grid container spacing={2} sx={{ mb: 2 }}>
             <Grid size={{ xs: 6, md: 3 }}>
               <Box sx={{ textAlign: 'center', py: 2 }}>
                 <Typography variant='h6' sx={{ fontWeight: 700 }}>
-                  ~$100 billion
+                  Daily Mood
                 </Typography>
                 <Typography
                   variant='body2'
                   sx={{ color: 'rgba(255,255,255,0.7)' }}
                 >
-                  cumulative trading volume to date
+                  Track your emotions with emoji + notes
                 </Typography>
               </Box>
             </Grid>
@@ -130,36 +124,36 @@ export default function Home() {
                   variant='h6'
                   sx={{ fontWeight: 700, color: '#181A1B' }}
                 >
-                  0.8%
+                  Spotify Sync
                 </Typography>
                 <Typography variant='body2' sx={{ color: '#181A1B' }}>
-                  of the global crypto spot trading volume
+                  Automatic listening data correlation
                 </Typography>
               </Box>
             </Grid>
             <Grid size={{ xs: 6, md: 3 }}>
               <Box sx={{ textAlign: 'center', py: 2 }}>
                 <Typography variant='h6' sx={{ fontWeight: 700 }}>
-                  ~30
+                  Mood Graphs
                 </Typography>
                 <Typography
                   variant='body2'
                   sx={{ color: 'rgba(255,255,255,0.7)' }}
                 >
-                  Gravity Teammates (& growing)
+                  Visualize your music + mood patterns
                 </Typography>
               </Box>
             </Grid>
             <Grid size={{ xs: 12, md: 3 }}>
               <Box sx={{ textAlign: 'center', py: 2 }}>
                 <Typography variant='h6' sx={{ fontWeight: 700 }}>
-                  25+
+                  AI Insights
                 </Typography>
                 <Typography
                   variant='body2'
                   sx={{ color: 'rgba(255,255,255,0.7)' }}
                 >
-                  leading global and local crypto exchanges
+                  Weekly reports & music recommendations
                 </Typography>
               </Box>
             </Grid>
@@ -169,52 +163,52 @@ export default function Home() {
             <Grid size={{ xs: 6, md: 3 }}>
               <Box sx={{ textAlign: 'center', py: 2 }}>
                 <Typography variant='h6' sx={{ fontWeight: 700 }}>
-                  2017
+                  Free
                 </Typography>
                 <Typography
                   variant='body2'
                   sx={{ color: 'rgba(255,255,255,0.7)' }}
                 >
-                  start, crypto-natives
+                  Basic mood tracking & Spotify sync
                 </Typography>
               </Box>
             </Grid>
             <Grid size={{ xs: 6, md: 3 }}>
               <Box sx={{ textAlign: 'center', py: 2 }}>
                 <Typography variant='h6' sx={{ fontWeight: 700 }}>
-                  1,200+
+                  Premium
                 </Typography>
                 <Typography
                   variant='body2'
                   sx={{ color: 'rgba(255,255,255,0.7)' }}
                 >
-                  crypto-asset pairs
+                  AI summaries & mood-tagged playlists
                 </Typography>
               </Box>
             </Grid>
             <Grid size={{ xs: 6, md: 3 }}>
               <Box sx={{ textAlign: 'center', py: 2 }}>
                 <Typography variant='h6' sx={{ fontWeight: 700 }}>
-                  24/7
+                  Export
                 </Typography>
                 <Typography
                   variant='body2'
                   sx={{ color: 'rgba(255,255,255,0.7)' }}
                 >
-                  liquidity
+                  PDF reports & Instagram stories
                 </Typography>
               </Box>
             </Grid>
             <Grid size={{ xs: 6, md: 3 }}>
               <Box sx={{ textAlign: 'center', py: 2 }}>
                 <Typography variant='h6' sx={{ fontWeight: 700 }}>
-                  5 billion+
+                  Mobile First
                 </Typography>
                 <Typography
                   variant='body2'
                   sx={{ color: 'rgba(255,255,255,0.7)' }}
                 >
-                  trades done to date
+                  Designed for Gen Z mobile users
                 </Typography>
               </Box>
             </Grid>

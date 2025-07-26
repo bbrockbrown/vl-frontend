@@ -1,7 +1,6 @@
 import { getApiUrl } from "@/lib/utils";
 
 const API_BASE_URL = getApiUrl();
-console.log("API_BASE_URL IS", API_BASE_URL)
 
 // Types
 export interface SpotifyTokens {

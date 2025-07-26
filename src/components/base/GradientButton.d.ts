@@ -4,5 +4,5 @@ interface GradientButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
     fromColor?: string;
     toColor?: string;
 }
-declare const GradientButton: React.FC<GradientButtonProps>;
+declare const GradientButton: (props: GradientButtonProps) => JSX.Element;
 export default GradientButton;

@@ -1,10 +1,17 @@
 import { useState } from 'react';
 
 import GradientButton from '@/components/base/GradientButton';
-import Logo from '@/components/icons/Logo';
+import GradientBorderButton from '@/components//base/GradientBorderButton';
+import LightLogo from '@/components/icons/LightLogo';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { CircleCheckIcon, CircleHelpIcon, CircleIcon, Menu, X } from 'lucide-react';
+import {
+  CircleCheckIcon,
+  CircleHelpIcon,
+  CircleIcon,
+  Menu,
+  X,
+} from 'lucide-react';
 import { Outlet } from 'react-router-dom';
 
 import {
@@ -16,6 +23,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
+import Button from '@/components/base/Button';
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -71,11 +79,14 @@ export default function Navbar() {
       <div className='flex flex-row items-center justify-between w-full max-w-[1400px] py-5 px-4 md:px-6'>
         {/* Logo */}
         <div className='relative'>
-          <Logo width='40' height='40' />
+          <LightLogo width='150' height='50' />
         </div>
 
         {/* Desktop Navigation Menu */}
-        <NavigationMenu viewport={true} className='bg-[#14161a] text-white hidden md:block'>
+        <NavigationMenu
+          viewport={true}
+          className='bg-[#14161a] text-white hidden md:block'
+        >
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger>Home</NavigationMenuTrigger>
@@ -219,12 +230,12 @@ export default function Navbar() {
 
         {/* Desktop Login/Signup */}
         <div className='hidden md:flex justify-end gap-2'>
-          <GradientButton fromColor='#CB3CFF' toColor='#7F25FB'>
+          <Button color='#CB3CFF' className='border border-white'>
             Login
-          </GradientButton>
-          <button className='px-4 py-1 rounded bg-blue-600 text-white font-medium hover:bg-blue-700 transition'>
+          </Button>
+          <GradientBorderButton fromColor='#ca3dfd' toColor='#10c3ff'>
             Sign Up
-          </button>
+          </GradientBorderButton>
         </div>
 
         {/* Mobile Hamburger Menu Button */}
@@ -239,8 +250,11 @@ export default function Navbar() {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className='md:hidden fixed inset-0 z-50 bg-black bg-opacity-50' onClick={closeMobileMenu}>
-          <div 
+        <div
+          className='md:hidden fixed inset-0 z-50 bg-black bg-opacity-50'
+          onClick={closeMobileMenu}
+        >
+          <div
             className='absolute top-0 right-0 w-80 h-full bg-[#14161a] shadow-xl transform transition-transform duration-300 ease-in-out'
             onClick={(e) => e.stopPropagation()}
           >
@@ -262,53 +276,56 @@ export default function Navbar() {
                 <nav className='space-y-4'>
                   {/* About Section */}
                   <div className='mb-6'>
-                    <h3 className='text-white font-semibold text-lg mb-3'>About</h3>
+                    <h3 className='text-white font-semibold text-lg mb-3'>
+                      About
+                    </h3>
                     <p className='text-gray-300 text-sm leading-relaxed'>
-                      Vibelog is a beautiful, minimalist mood journal that syncs with your Spotify listening 
-                      and generates personal music + mood trends. Track your emotions through music without 
-                      the chore of traditional journaling.
+                      Vibelog is a beautiful, minimalist mood journal that syncs
+                      with your Spotify listening and generates personal music +
+                      mood trends. Track your emotions through music without the
+                      chore of traditional journaling.
                     </p>
                   </div>
 
                   {/* Navigation Links */}
                   <div className='space-y-2'>
-                    <Link 
-                      to='/' 
+                    <Link
+                      to='/'
                       className='block text-white hover:text-gray-300 py-2 transition-colors'
                       onClick={closeMobileMenu}
                     >
                       Home
                     </Link>
-                    <Link 
-                      to='/docs' 
+                    <Link
+                      to='/docs'
                       className='block text-white hover:text-gray-300 py-2 transition-colors'
                       onClick={closeMobileMenu}
                     >
                       Docs
                     </Link>
-                    <Link 
-                      to='#' 
+                    <Link
+                      to='#'
                       className='block text-white hover:text-gray-300 py-2 transition-colors'
                       onClick={closeMobileMenu}
                     >
                       Components
                     </Link>
-                    <Link 
-                      to='#' 
+                    <Link
+                      to='#'
                       className='block text-white hover:text-gray-300 py-2 transition-colors'
                       onClick={closeMobileMenu}
                     >
                       List
                     </Link>
-                    <Link 
-                      to='#' 
+                    <Link
+                      to='#'
                       className='block text-white hover:text-gray-300 py-2 transition-colors'
                       onClick={closeMobileMenu}
                     >
                       Simple
                     </Link>
-                    <Link 
-                      to='#' 
+                    <Link
+                      to='#'
                       className='block text-white hover:text-gray-300 py-2 transition-colors'
                       onClick={closeMobileMenu}
                     >
@@ -320,20 +337,12 @@ export default function Navbar() {
 
               {/* Mobile Login/Signup Buttons */}
               <div className='p-6 border-t border-gray-700 space-y-3'>
-                <GradientButton 
-                  fromColor='#CB3CFF' 
-                  toColor='#7F25FB'
-                  className='w-full'
-                  onClick={closeMobileMenu}
-                >
+                <Button color='#CB3CFF' className='border border-white w-full' onClick={closeMobileMenu}>
                   Login
-                </GradientButton>
-                <button 
-                  className='w-full px-4 py-2 rounded bg-blue-600 text-white font-medium hover:bg-blue-700 transition'
-                  onClick={closeMobileMenu}
-                >
+                </Button>
+                <GradientBorderButton fromColor='#4F8CFF' toColor='#FFD580' className='w-full px-4 py-2 font-medium transition' onClick={closeMobileMenu}>
                   Sign Up
-                </button>
+                </GradientBorderButton>
               </div>
             </div>
           </div>
