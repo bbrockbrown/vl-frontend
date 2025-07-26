@@ -6,9 +6,9 @@ export default function Footer() {
     <footer className='w-full text-white py-8 md:py-12'>
       <div className='mx-auto px-4 md:px-6'>
         {/* Main Footer Content */}
-        <div className='flex flex-col md:flex-row justify-between md:items-start items-center mb-8'>
+        <div className='flex flex-col md:flex-row justify-between md:items-center items-center mb-8'>
           {/* Left Section - Navigation */}
-          <div className='mb-6 md:mb-0'>
+          <div className='mb-6 md:mb-0 text-center md:text-start'>
             <nav className='space-y-2'>
               <Link 
                 to='/about' 

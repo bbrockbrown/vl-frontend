@@ -4,5 +4,5 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     color?: string;
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
-declare const Button: (props: ButtonProps) => JSX.Element;
+declare const Button: (props: ButtonProps) => React.JSX.Element;
 export default Button;
