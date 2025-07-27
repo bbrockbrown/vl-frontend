@@ -186,7 +186,7 @@ export default function Home() {
               alt="Spotify Logo"
             />
             <GradientButton
-              onClick={() => spotifyLogin()}
+              onClick={() => console.log("Spotify Login in progress")}
               fromColor='#ca3dfd'
               toColor='#10c3ff'
               className="text-lg md:text-xl px-8 md:px-12 py-3 md:py-4 rounded-3xl font-semibold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300"

@@ -1,9 +1,10 @@
 interface LightIconLogoProps {
   width: string;
   height: string;
+  className?: string;
 }
 
-export default function LightIconLogo({ width, height }: LightIconLogoProps) {
+export default function LightIconLogo({ width, height, className }: LightIconLogoProps) {
   return (
     <svg
       width={width}
@@ -11,6 +12,7 @@ export default function LightIconLogo({ width, height }: LightIconLogoProps) {
       viewBox='0 0 220 211'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
+      className={className}
     >
       <g clipPath='url(#clip0_35_95)'>
         <path

@@ -183,6 +183,15 @@ body {
   line-height: 1.5;
 }
 
+img {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
 img, video {
   max-width: 100%;
   height: auto;
@@ -231,4 +240,13 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, figure {
     transform: scale(2.5);
     opacity: 0;
   }
+}
+
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
