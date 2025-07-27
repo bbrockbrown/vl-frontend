@@ -7,9 +7,16 @@ import BigClearBlob from '@/assets/big_clear_blob.png';
 import BlueBlob from '@/assets/blue_blob.png';
 import PurpleYellowBlob from '@/assets/purple_yellow_blob.png';
 import BlueYellowBlob from '@/assets/blue_yellow_blob.png';
-import PurpleGlassSpotify from '@/assets/purple_glass_spotify.png'
+import PurpleGlassSpotify from '@/assets/purple_glass_spotify.png';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
+  const navigate = useNavigate();
+
+  const handleStartQuiz = () => {
+    navigate('/quiz');
+  };
+
   return (
     <>
       <Box
@@ -110,9 +117,9 @@ export default function Home() {
                 fontWeight: 400,
               }}
             >
-              A beautiful, minimalist mood journal that syncs with your Spotify
-              listening and generates personal music + mood trends. Track your
-              emotions through music without the chore of traditional journaling.
+              Take our personality quiz and discover how your music choices reflect your mood, 
+              energy, and lifestyle. Connect with Spotify to get personalized insights about 
+              your listening patterns and emotional patterns.
             </Typography>
           </Box>
 
@@ -181,12 +188,12 @@ export default function Home() {
               alt="Spotify Logo"
             />
             <GradientButton
-              onClick={() => console.log("Spotify Login in progress")}
+              onClick={handleStartQuiz}
               fromColor='#ca3dfd'
               toColor='#10c3ff'
               className="text-lg md:text-xl px-8 md:px-12 py-3 md:py-4 rounded-3xl font-semibold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
-              CONNECT WITH SPOTIFY
+              START PERSONALITY QUIZ
             </GradientButton>
           </Box>
         </Box>
@@ -211,7 +218,7 @@ export default function Home() {
               fontSize: { xs: 32, md: 40 },
             }}
           >
-            Why Choose Vibelog?
+            How It Works
           </Typography>
           
           <Grid container spacing={4}>
@@ -233,10 +240,11 @@ export default function Home() {
                 }}
               >
                 <Typography variant='h5' sx={{ fontWeight: 700, mb: 2 }}>
-                  Seamless Spotify Sync
+                  Take the Quiz
                 </Typography>
                 <Typography variant='body1' sx={{ color: 'rgba(255,255,255,0.8)', lineHeight: 1.6 }}>
-                  Automatically sync your listening history and discover how your music choices reflect your mood patterns.
+                  Answer 10 quick questions about your personality, mood, and 
+                  lifestyle to discover your music personality type.
                 </Typography>
               </Box>
             </Grid>
@@ -259,10 +267,11 @@ export default function Home() {
                 }}
               >
                 <Typography variant='h5' sx={{ fontWeight: 700, mb: 2 }}>
-                  Beautiful Insights
+                  Connect Spotify
                 </Typography>
                 <Typography variant='body1' sx={{ color: 'rgba(255,255,255,0.8)', lineHeight: 1.6 }}>
-                  Get personalized mood graphs and AI-generated insights that help you understand your emotional patterns.
+                  Link your Spotify account to analyze your listening patterns and 
+                  correlate them with your personality traits.
                 </Typography>
               </Box>
             </Grid>
@@ -285,10 +294,11 @@ export default function Home() {
                 }}
               >
                 <Typography variant='h5' sx={{ fontWeight: 700, mb: 2 }}>
-                  Mood-Tagged Playlists
+                  Get Insights
                 </Typography>
                 <Typography variant='body1' sx={{ color: 'rgba(255,255,255,0.8)', lineHeight: 1.6 }}>
-                  Create and discover playlists based on your mood, helping you find the perfect music for every emotion.
+                  Receive personalized insights about how your music choices reflect your 
+                  personality and emotional patterns.
                 </Typography>
               </Box>
             </Grid>
@@ -356,10 +366,9 @@ export default function Home() {
                 fontWeight: 400,
               }}
             >
-              Vibelog combines something Gen Z already does (listen to music) with
-              a gentle journaling flow. Generate insights that feel personal,
-              aesthetic, and emotional. Perfect for people who want to track
-              feelings but don't want to "write a diary".
+              Vibelog combines personality psychology with music analysis to help you understand 
+              how your listening habits reflect your emotional patterns. Perfect for music lovers 
+              who want to discover the deeper connection between their personality and their playlists.
             </Typography>
             
             {/* Stats Grid with Enhanced Design */}
@@ -367,40 +376,40 @@ export default function Home() {
               <Grid size={{ xs: 6, md: 3 }}>
                 <Box sx={{ textAlign: 'center', py: 3 }}>
                   <Typography variant='h4' sx={{ fontWeight: 700, mb: 1, color: '#ca3dfd' }}>
-                    Daily Mood
+                    Personality Quiz
                   </Typography>
                   <Typography variant='body2' sx={{ color: 'rgba(255,255,255,0.7)' }}>
-                    Track emotions with emoji + notes
+                    10 questions about you
                   </Typography>
                 </Box>
               </Grid>
               <Grid size={{ xs: 6, md: 3 }}>
                 <Box sx={{ textAlign: 'center', py: 3 }}>
                   <Typography variant='h4' sx={{ fontWeight: 700, mb: 1, color: '#10c3ff' }}>
-                    Spotify Sync
+                    Spotify Analysis
                   </Typography>
                   <Typography variant='body2' sx={{ color: 'rgba(255,255,255,0.7)' }}>
-                    Automatic listening data correlation
+                    Your listening patterns
                   </Typography>
                 </Box>
               </Grid>
               <Grid size={{ xs: 6, md: 3 }}>
                 <Box sx={{ textAlign: 'center', py: 3 }}>
                   <Typography variant='h4' sx={{ fontWeight: 700, mb: 1, color: '#ca3dfd' }}>
-                    Mood Graphs
+                    Music Correlation
                   </Typography>
                   <Typography variant='body2' sx={{ color: 'rgba(255,255,255,0.7)' }}>
-                    Visualize music + mood patterns
+                    Personality + music match
                   </Typography>
                 </Box>
               </Grid>
               <Grid size={{ xs: 6, md: 3 }}>
                 <Box sx={{ textAlign: 'center', py: 3 }}>
                   <Typography variant='h4' sx={{ fontWeight: 700, mb: 1, color: '#10c3ff' }}>
-                    AI Insights
+                    Personalized Insights
                   </Typography>
                   <Typography variant='body2' sx={{ color: 'rgba(255,255,255,0.7)' }}>
-                    Weekly reports & recommendations
+                    Your unique music profile
                   </Typography>
                 </Box>
               </Grid>

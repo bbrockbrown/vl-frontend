@@ -61,3 +61,56 @@ export const refreshSpotifyToken = async (refreshToken: string): Promise<Spotify
 
   return response.json();
 };
+
+// Get user's top tracks
+export const getUserTopTracks = async (timeRange: 'short_term' | 'medium_term' | 'long_term' = 'short_term', limit: number = 20): Promise<any> => {
+  const response = await fetch(`${API_BASE_URL}/api/spotify/top-tracks?time_range=${timeRange}&limit=${limit}`, {
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch top tracks');
+  }
+
+  return response.json();
+};
+
+// Get user's recently played tracks
+export const getUserRecentlyPlayed = async (limit: number = 50): Promise<any> => {
+  const response = await fetch(`${API_BASE_URL}/api/spotify/recently-played?limit=${limit}`, {
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch recently played tracks');
+  }
+
+  return response.json();
+};
+
+// Get audio features for tracks
+export const getTrackAudioFeatures = async (trackIds: string[]): Promise<any> => {
+  const ids = trackIds.join(',');
+  const response = await fetch(`${API_BASE_URL}/api/spotify/audio-features?ids=${ids}`, {
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch audio features');
+  }
+
+  return response.json();
+};
+
+// Get user's saved tracks
+export const getUserSavedTracks = async (limit: number = 20, offset: number = 0): Promise<any> => {
+  const response = await fetch(`${API_BASE_URL}/api/spotify/saved-tracks?limit=${limit}&offset=${offset}`, {
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch saved tracks');
+  }
+
+  return response.json();
+};
