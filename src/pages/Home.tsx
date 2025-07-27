@@ -1,17 +1,12 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import { spotifyLogin } from '@/api/spotify';
 import Footer from '@/components/layout/Footer';
 import GradientButton from '@/components/base/GradientButton';
 import BigClearBlob from '@/assets/big_clear_blob.png';
-import SmallClearBlob from '@/assets/small_clear_blob.png';
-import SmallestClearBlob from '@/assets/smallest_clear_blob.png';
 import BlueBlob from '@/assets/blue_blob.png';
-import YellowBlob from '@/assets/yellow_blob.png';
 import PurpleYellowBlob from '@/assets/purple_yellow_blob.png';
 import BlueYellowBlob from '@/assets/blue_yellow_blob.png';
-import GlassSpotify from '@/assets/glass_spotify.png';
 import PurpleGlassSpotify from '@/assets/purple_glass_spotify.png'
 
 export default function Home() {
