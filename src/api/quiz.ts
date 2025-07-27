@@ -42,7 +42,8 @@ export interface QuizResult {
 
 // Submit quiz answers and get analysis
 export const submitQuizAnswers = async (answers: QuizAnswer[]): Promise<QuizResult> => {
-  const response = await fetch(`${API_BASE_URL}/api/quiz/analyze`, {
+  console.log("answers for submitQuizAnswers", answers);
+  const response = await fetch(`${API_BASE_URL}/quiz/analyze`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -60,7 +61,7 @@ export const submitQuizAnswers = async (answers: QuizAnswer[]): Promise<QuizResu
 
 // Get detailed Spotify analysis
 export const getSpotifyAnalysis = async (): Promise<SpotifyAnalysis> => {
-  const response = await fetch(`${API_BASE_URL}/api/quiz/spotify-analysis`, {
+  const response = await fetch(`${API_BASE_URL}/quiz/spotify-analysis`, {
     credentials: 'include',
   });
 
@@ -73,7 +74,7 @@ export const getSpotifyAnalysis = async (): Promise<SpotifyAnalysis> => {
 
 // Get personalized recommendations based on quiz and Spotify data
 export const getPersonalizedRecommendations = async (quizAnswers: QuizAnswer[]): Promise<any> => {
-  const response = await fetch(`${API_BASE_URL}/api/quiz/recommendations`, {
+  const response = await fetch(`${API_BASE_URL}/quiz/recommendations`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

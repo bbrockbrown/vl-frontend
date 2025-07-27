@@ -7,6 +7,7 @@ import Quiz from '@/pages/Quiz';
 import Results from '@/pages/Results';
 import theme from './theme/theme';
 import { ThemeProvider } from '@emotion/react';
+import LoadingResults from '@/pages/LoadingResults';
 
 function AppContent() {
   const location = useLocation();
@@ -15,23 +16,14 @@ function AppContent() {
 
   return (
     <Routes>
-      {isQuizPage ? (
-        // Quiz route with QuizNavbar
-        <Route path='/quiz' element={
-          <>
-            <QuizNavbar />
-            <Quiz />
-          </>
-        } />
-      ) : isResultsPage ? (
-        // Results route without navbar for full-screen experience
-        <Route path='/results' element={<Results />} />
-      ) : (
-        // All other routes with regular navbar
-        <Route element={<Navbar />}>
-          <Route path='/' element={<Home />} />
-        </Route>
-      )}
+      <Route path='/' element={<Navbar />}>
+        <Route index element={<Home />} />
+      </Route>
+      <Route path='/quiz' element={<QuizNavbar />}>
+        <Route index element={<Quiz />} />
+        <Route path='loading-results' element={<LoadingResults />} />
+        <Route path='results' element={<Results />} />
+      </Route>
     </Routes>
   );
 }

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import LightLogo from '@/components/icons/LightLogo';
 import { LogOut } from 'lucide-react';
 import Button from '@/components/base/Button';
-
+import { Outlet } from 'react-router-dom';
 interface QuizNavbarProps {
   onExit?: () => void;
 }
@@ -94,6 +94,7 @@ export default function QuizNavbar({ onExit }: QuizNavbarProps) {
           </div>
         </div>
       )}
+      <Outlet />
     </>
   );
 }

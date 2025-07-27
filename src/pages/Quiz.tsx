@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { submitQuizAnswers } from '@/api/quiz';
 import type { QuizAnswer } from '@/api/quiz';
+import Button from '@/components/base/Button';
+import { spotifyLogin } from '@/api/spotify';
 
 interface QuizProps {}
 
@@ -138,6 +140,11 @@ const QUIZ_ANSWERS_KEY = 'vibelog_quiz_answers';
 
 export default function Quiz({}: QuizProps) {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  
+  // Check for Spotify callback success
+  const success = searchParams.get("success");
+  const error = searchParams.get("error");
 
   // Load saved state from localStorage
   const loadSavedState = (): QuizState => {
@@ -181,6 +188,71 @@ export default function Quiz({}: QuizProps) {
   };
 
   const [quizState, setQuizState] = useState<QuizState>(loadSavedState);
+
+  // Handle Spotify callback success
+  useEffect(() => {
+    if (success === 'true') {
+      console.log('Spotify authentication successful, submitting quiz answers...');
+      
+      // Get saved quiz answers from localStorage
+      const savedAnswers = localStorage.getItem(QUIZ_ANSWERS_KEY);
+      if (savedAnswers) {
+        try {
+          const answers = JSON.parse(savedAnswers);
+          
+          // Submit quiz answers automatically
+          handleSubmitQuizAnswers(answers);
+          
+          // Clear the URL parameters
+          navigate('/quiz', { replace: true });
+        } catch (error) {
+          console.error('Error parsing saved quiz answers:', error);
+          setQuizState(prev => ({
+            ...prev,
+            error: 'Failed to load saved quiz answers'
+          }));
+        }
+      } else {
+        console.error('No saved quiz answers found');
+        setQuizState(prev => ({
+          ...prev,
+          error: 'No quiz answers found. Please take the quiz again.'
+        }));
+      }
+    } else if (error) {
+      console.error('Spotify authentication failed:', error);
+      setQuizState(prev => ({
+        ...prev,
+        error: `Spotify authentication failed: ${error}`
+      }));
+    }
+  }, [success, error, navigate]);
+
+  const handleSubmitQuizAnswers = async (answers: QuizAnswer[]) => {
+    setQuizState(prev => ({ ...prev, isLoading: true, error: null }));
+
+    try {
+      console.log('Submitting quiz answers:', answers);
+      const results = await submitQuizAnswers(answers);
+
+      // Save results to localStorage for the results page
+      localStorage.setItem('vibelog_quiz_results', JSON.stringify(results));
+
+      // Clear quiz state from localStorage
+      localStorage.removeItem(QUIZ_STATE_KEY);
+      localStorage.removeItem(QUIZ_ANSWERS_KEY);
+      localStorage.removeItem('vibelog_quiz_seen_questions');
+
+      console.log("SUBMITTED ANSWERSSSSS");
+    } catch (error) {
+      console.error('Error submitting quiz answers:', error);
+      setQuizState(prev => ({
+        ...prev,
+        error: error instanceof Error ? error.message : 'Failed to submit quiz answers',
+        isLoading: false,
+      }));
+    }
+  };
 
   // Save state to localStorage whenever it changes
   useEffect(() => {
@@ -245,25 +317,13 @@ export default function Quiz({}: QuizProps) {
       newAnswers = [...quizState.answers, newAnswer];
     }
 
-    // Still have more questions to answer
-    if (quizState.currentQuestion < questions.length - 1) {
-      setQuizState((prev) => ({
-        ...prev,
-        answers: newAnswers,
-        seenQuestions: [
-          ...new Set([...prev.seenQuestions, prev.currentQuestion + 1]),
-        ],
-      }));
-
-      // Transition to next question
-      transitionToQuestion(quizState.currentQuestion + 1);
-    } else {
-      setQuizState((prev) => ({
-        ...prev,
-        answers: newAnswers,
-        isComplete: true,
-      }));
-    }
+    setQuizState((prev) => ({
+      ...prev,
+      answers: newAnswers,
+      seenQuestions: [
+        ...new Set([...prev.seenQuestions, prev.currentQuestion + 1]),
+      ],
+    }));
   };
 
   const handleBack = () => {
@@ -273,17 +333,34 @@ export default function Quiz({}: QuizProps) {
   };
 
   const handleNext = () => {
+    console.log('=== handleNext called ===');
     const nextQuestion = quizState.currentQuestion + 1;
     const hasAnsweredCurrent = quizState.answers.some(
       (a) => a.questionId === questions[quizState.currentQuestion].id
     );
     const hasSeenNext = quizState.seenQuestions.includes(nextQuestion);
 
-    // Can go next if current question is answered OR next question has been seen
-    if (
+    console.log('Current question', quizState.currentQuestion);
+    console.log('Next question', nextQuestion);
+    console.log('answered current question', hasAnsweredCurrent);
+    console.log('has seen next', hasSeenNext);
+    console.log('isLastQuestion()', isLastQuestion());
+    console.log('questions.length', questions.length);
+
+    // Check if we're on the last question and it's answered
+    if (isLastQuestion() && hasAnsweredCurrent) {
+      console.log('Completing quiz!');
+      // Complete the quiz when "Finish" is clicked on the last question
+      setQuizState((prev) => ({
+        ...prev,
+        isComplete: true,
+      }));
+    } else if (
       (hasAnsweredCurrent || hasSeenNext) &&
       nextQuestion < questions.length
     ) {
+      console.log('Navigating to next question');
+      // Can go next if current question is answered OR next question has been seen
       setQuizState((prev) => ({
         ...prev,
         seenQuestions: [...new Set([...prev.seenQuestions, nextQuestion])],
@@ -291,21 +368,26 @@ export default function Quiz({}: QuizProps) {
 
       // Transition to next question
       transitionToQuestion(nextQuestion);
-    } else { // We just answered the last question by pressing "Finish"
-      // Submit answers to backend
-      
+    } else {
+      console.log('No action taken - conditions not met');
     }
   };
 
   const canGoNext = () => {
     const nextQuestion = quizState.currentQuestion + 1;
+    console.log('Current question', quizState.currentQuestion);
+    console.log('Next question', quizState.currentQuestion + 1);
+
     const hasAnsweredCurrent = quizState.answers.some(
       (a) => a.questionId === questions[quizState.currentQuestion].id
     );
     const hasSeenNext = quizState.seenQuestions.includes(nextQuestion);
 
+    console.log('answered current question', hasAnsweredCurrent);
+    console.log('has seen next', hasSeenNext);
+
     return (
-      (hasAnsweredCurrent || hasSeenNext) && nextQuestion < questions.length
+      (hasAnsweredCurrent || hasSeenNext)
     );
   };
 
@@ -321,18 +403,20 @@ export default function Quiz({}: QuizProps) {
     handleAnswer(text);
   };
 
-  const handleGenerateResults = async () => {
+  const handleSpotifyNavigation = async () => {
     setQuizState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const results = await submitQuizAnswers(quizState.answers);
+      // Navigate user to Spotify OAuth
+      spotifyLogin();
+      // const results = await submitQuizAnswers(quizState.answers);
 
       // Save results to localStorage for the results page
-      localStorage.setItem('vibelog_quiz_results', JSON.stringify(results));
+      // localStorage.setItem('vibelog_quiz_results', JSON.stringify(results));
 
-      // Clear quiz state from localStorage
-      localStorage.removeItem(QUIZ_STATE_KEY);
-      localStorage.removeItem(QUIZ_ANSWERS_KEY);
+      // // Clear quiz state from localStorage
+      // localStorage.removeItem(QUIZ_STATE_KEY);
+      // localStorage.removeItem(QUIZ_ANSWERS_KEY);
 
       // Navigate to results page
       navigate('/results');
@@ -412,18 +496,18 @@ export default function Quiz({}: QuizProps) {
             </div>
             <div className='flex justify-between'>
               {[1, 2, 3, 4, 5].map((value) => (
-                <button
+                <Button
                   key={value}
                   onClick={() => handleScaleAnswer(value)}
                   disabled={quizState.isTransitioning}
-                  className={`w-12 h-12 rounded-full border-2 transition-all duration-200 flex items-center justify-center ${
+                  className={`w-12 h-12 !rounded-full border-2 transition-all duration-200 flex items-center justify-center ${
                     currentAnswer?.answer === value
                       ? 'border-blue-400 bg-blue-600 text-white'
                       : 'border-gray-600 hover:border-blue-400 hover:bg-gray-700 text-white bg-gray-800'
                   } ${quizState.isTransitioning ? 'pointer-events-none' : ''}`}
                 >
                   {value}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -468,11 +552,11 @@ export default function Quiz({}: QuizProps) {
             disabled={
               quizState.currentQuestion === 0 || quizState.isTransitioning
             }
-            className={`px-6 py-2 rounded-lg transition-colors ${
+            className={`px-6 py-2 rounded-lg transition-colors cursor-pointer ${
               quizState.currentQuestion === 0 || quizState.isTransitioning
                 ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
                 : 'bg-gray-700 text-white hover:bg-gray-600'
-            }`}
+            } ${quizState.currentQuestion === 0 && 'hidden'}`}
           >
             ← Back
           </button>
@@ -484,7 +568,7 @@ export default function Quiz({}: QuizProps) {
           <button
             onClick={handleNext}
             disabled={!canGoNext() || quizState.isTransitioning}
-            className={`px-6 py-2 rounded-lg transition-colors ${
+            className={`px-6 py-2 rounded-lg transition-colors cursor-pointer ${
               !canGoNext() || quizState.isTransitioning
                 ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
                 : 'bg-blue-600 text-white hover:bg-blue-700'
@@ -498,21 +582,37 @@ export default function Quiz({}: QuizProps) {
   };
 
   const renderResults = () => {
-    if (quizState.isLoading) {
+    if (!quizState.error) {
       return (
-        <div className='max-w-2xl mx-auto p-6 text-center'>
-          <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4'></div>
-          <h2 className='text-xl font-semibold text-white mb-2'>
-            Analyzing your vibe...
+        <div className='max-w-2xl mx-auto p-6'>
+          <h2 className='text-2xl font-bold text-white !mb-6'>
+            Quiz Complete! :)
           </h2>
-          <p className='text-gray-300'>
-            We're comparing your answers with your Spotify listening patterns
+          <p className='text-gray-300 !mb-6'>
+            Thanks for sharing! We're analyzing your answers alongside your
+            Spotify listening data to create your personalized vibe profile.
           </p>
+
+          <div className='bg-blue-900 border border-blue-700 rounded-lg p-4 !mb-6'>
+            <h3 className='font-semibold text-blue-200 !mb-2'>
+              What happens next?
+            </h3>
+            <ul className='text-sm text-blue-300 space-y-1'>
+              <li>• We'll analyze your listening patterns</li>
+              <li>• Compare your answers with your music choices</li>
+              <li>• Generate your personalized vibe insights</li>
+              <li>• Create your mood-music correlation report</li>
+            </ul>
+          </div>
+          <Button
+            onClick={handleSpotifyNavigation}
+            className='w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'
+          >
+            Connect to Spotify & Generate My Vibe Profile
+          </Button>
         </div>
       );
-    }
-
-    if (quizState.error) {
+    } else {
       return (
         <div className='max-w-2xl mx-auto p-6'>
           <div className='bg-red-900 border border-red-700 rounded-lg p-4 mb-6'>
@@ -522,7 +622,7 @@ export default function Quiz({}: QuizProps) {
             <p className='text-red-300'>{quizState.error}</p>
           </div>
           <button
-            onClick={handleGenerateResults}
+            onClick={handleSpotifyNavigation}
             className='w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'
           >
             Try Again
@@ -530,37 +630,6 @@ export default function Quiz({}: QuizProps) {
         </div>
       );
     }
-
-    return (
-      <div className='max-w-2xl mx-auto p-6'>
-        <h2 className='text-2xl font-bold text-white mb-6'>
-          Quiz Complete! 🎉
-        </h2>
-        <p className='text-gray-300 mb-6'>
-          Thanks for sharing! We're analyzing your answers alongside your
-          Spotify listening data to create your personalized vibe profile.
-        </p>
-
-        <div className='bg-blue-900 border border-blue-700 rounded-lg p-4 mb-6'>
-          <h3 className='font-semibold text-blue-200 mb-2'>
-            What happens next?
-          </h3>
-          <ul className='text-sm text-blue-300 space-y-1'>
-            <li>• We'll analyze your listening patterns</li>
-            <li>• Compare your answers with your music choices</li>
-            <li>• Generate your personalized vibe insights</li>
-            <li>• Create your mood-music correlation report</li>
-          </ul>
-        </div>
-
-        <button
-          onClick={handleGenerateResults}
-          className='w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'
-        >
-          Generate My Vibe Profile
-        </button>
-      </div>
-    );
   };
 
   if (quizState.isComplete) {
@@ -575,9 +644,7 @@ export default function Quiz({}: QuizProps) {
   }
 
   return (
-    <div
-      style={{ backgroundColor: 'var(--background)' }}
-    >
+    <div style={{ backgroundColor: 'var(--background)' }}>
       <div className='container mx-auto py-8'>{renderQuestion()}</div>
     </div>
   );
