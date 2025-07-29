@@ -37,3 +37,7 @@ export interface SpotifyTrack {
 export declare const spotifyLogin: () => void;
 export declare const handleSpotifyCallback: (code: string, state: string) => Promise<SpotifyTokens>;
 export declare const refreshSpotifyToken: (refreshToken: string) => Promise<SpotifyTokens>;
+export declare const getUserTopTracks: (timeRange?: "short_term" | "medium_term" | "long_term", limit?: number) => Promise<any>;
+export declare const getUserRecentlyPlayed: (limit?: number) => Promise<any>;
+export declare const getTrackAudioFeatures: (trackIds: string[]) => Promise<any>;
+export declare const getUserSavedTracks: (limit?: number, offset?: number) => Promise<any>;

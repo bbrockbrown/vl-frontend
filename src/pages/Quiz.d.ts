@@ -1,2 +1,4 @@
-declare function Quiz(): import("react/jsx-runtime").JSX.Element;
-export default Quiz;
+interface QuizProps {
+}
+export default function Quiz({}: QuizProps): import("react/jsx-runtime").JSX.Element;
+export {};

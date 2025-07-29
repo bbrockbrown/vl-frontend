@@ -1,2 +1,5 @@
-declare function QuizNavbar(): import("react/jsx-runtime").JSX.Element;
-export default QuizNavbar;
+interface QuizNavbarProps {
+    onExit?: () => void;
+}
+export default function QuizNavbar({ onExit }: QuizNavbarProps): import("react/jsx-runtime").JSX.Element;
+export {};

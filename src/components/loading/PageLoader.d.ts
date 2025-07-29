@@ -1,2 +1,1 @@
-declare const PageLoader: () => import("react/jsx-runtime").JSX.Element;
-export default PageLoader;
+export default function PageLoader(): import("react/jsx-runtime").JSX.Element;
