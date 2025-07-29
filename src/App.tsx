@@ -10,10 +10,6 @@ import { ThemeProvider } from '@emotion/react';
 import LoadingResults from '@/pages/LoadingResults';
 
 function AppContent() {
-  const location = useLocation();
-  const isQuizPage = location.pathname === '/quiz';
-  const isResultsPage = location.pathname === '/results';
-
   return (
     <Routes>
       <Route path='/' element={<Navbar />}>
