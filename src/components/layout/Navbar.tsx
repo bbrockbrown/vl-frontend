@@ -80,9 +80,12 @@ export default function Navbar() {
     <>
       <div className='flex flex-row items-center justify-between w-full max-w-[1400px] py-5 px-4 md:px-6'>
         {/* Logo */}
-        <div className='relative'>
+        <Link 
+          className='relative'
+          to='/'
+        >
           <LightLogo width='150' height='50' />
-        </div>
+        </Link>
 
         {/* Desktop Navigation Menu */}
         <NavigationMenu
@@ -103,6 +106,9 @@ export default function Navbar() {
                     </NavigationMenuLink>
                     <NavigationMenuLink asChild>
                       <Link to='#'>Why Vibelog?</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink asChild>
+                      <Link to='/credits'>Credits</Link>
                     </NavigationMenuLink>
                   </li>
                 </ul>
