@@ -17,10 +17,16 @@ export default function Footer() {
                 About Us
               </Link>
               <Link 
-                to='/careers' 
+                to='/contact' 
                 className='block text-white hover:text-gray-300 transition-colors'
               >
                 Reach out
+              </Link>
+              <Link 
+                to='/credits' 
+                className='block text-white hover:text-gray-300 transition-colors'
+              >
+                API & Data Credits
               </Link>
             </nav>
           </div>

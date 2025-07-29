@@ -8,12 +8,14 @@ import Results from '@/pages/Results';
 import theme from './theme/theme';
 import { ThemeProvider } from '@emotion/react';
 import LoadingResults from '@/pages/LoadingResults';
+import Credits from '@/pages/Credits';
 
 function AppContent() {
   return (
     <Routes>
       <Route path='/' element={<Navbar />}>
         <Route index element={<Home />} />
+        <Route path='credits' element={<Credits />} />
       </Route>
       <Route path='/quiz' element={<QuizNavbar />}>
         <Route index element={<Quiz />} />
