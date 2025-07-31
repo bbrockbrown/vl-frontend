@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { submitQuizAnswers } from '@/api/quiz';
 import type { QuizAnswer } from '@/api/quiz';
@@ -145,6 +145,9 @@ export default function Quiz({}: QuizProps) {
   // Check for Spotify callback success
   const success = searchParams.get("success");
   const error = searchParams.get("error");
+  
+  // Prevent duplicate submissions
+  const hasSubmitted = useRef(false);
 
   // Load saved state from localStorage
   const loadSavedState = (): QuizState => {
@@ -191,8 +194,9 @@ export default function Quiz({}: QuizProps) {
 
   // Handle Spotify callback success
   useEffect(() => {
-    if (success === 'true') {
+    if (success === 'true' && !hasSubmitted.current) {
       console.log('Spotify authentication successful, submitting quiz answers...');
+      hasSubmitted.current = true; // Mark as submitted immediately
       
       // Get saved quiz answers from localStorage
       const savedAnswers = localStorage.getItem(QUIZ_ANSWERS_KEY);
@@ -207,6 +211,7 @@ export default function Quiz({}: QuizProps) {
           navigate('/quiz', { replace: true });
         } catch (error) {
           console.error('Error parsing saved quiz answers:', error);
+          hasSubmitted.current = false; // Reset on error so user can retry
           setQuizState(prev => ({
             ...prev,
             error: 'Failed to load saved quiz answers'
@@ -214,12 +219,13 @@ export default function Quiz({}: QuizProps) {
         }
       } else {
         console.error('No saved quiz answers found');
+        hasSubmitted.current = false; // Reset on error
         setQuizState(prev => ({
           ...prev,
           error: 'No quiz answers found. Please take the quiz again.'
         }));
       }
-    } else if (error) {
+    } else if (error && !hasSubmitted.current) {
       console.error('Spotify authentication failed:', error);
       setQuizState(prev => ({
         ...prev,
@@ -229,6 +235,12 @@ export default function Quiz({}: QuizProps) {
   }, [success, error, navigate]);
 
   const handleSubmitQuizAnswers = async (answers: QuizAnswer[]) => {
+    // Prevent multiple simultaneous submissions
+    if (quizState.isLoading) {
+      console.log('Quiz submission already in progress, skipping...');
+      return;
+    }
+
     setQuizState(prev => ({ ...prev, isLoading: true, error: null }));
 
     try {
@@ -246,6 +258,7 @@ export default function Quiz({}: QuizProps) {
       console.log("SUBMITTED ANSWERSSSSS");
     } catch (error) {
       console.error('Error submitting quiz answers:', error);
+      hasSubmitted.current = false; // Reset on error to allow retry
       setQuizState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Failed to submit quiz answers',
