@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { QuizResult } from '@/api/quiz';
+import TopCards from '@/components/dashboard/TopCards';
+import ListeningActivity from '@/components/dashboard/ListeningActivity';
+import AudioFeaturesRadar from '@/components/dashboard/AudioFeaturesRadar';
+import MoodDistribution from '@/components/dashboard/MoodDistribution';
+import ListeningPatterns from '@/components/dashboard/ListeningPatterns';
+import AudioFeaturesCorrelation from '@/components/dashboard/AudioFeaturesCorrelation';
 
 export default function Results() {
   const navigate = useNavigate();
@@ -27,24 +33,26 @@ export default function Results() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your results...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading your results...</p>
         </div>
       </div>
     );
   }
 
+  console.log("Stored results", results);
+
   if (!results) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">No Results Found</h2>
-          <p className="text-gray-600 mb-6">Please complete the quiz to see your results.</p>
+          <h2 className="text-2xl font-bold text-card-foreground mb-4">No Results Found</h2>
+          <p className="text-muted-foreground mb-6">Please complete the quiz to see your results.</p>
           <button
             onClick={() => navigate('/quiz')}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             Take Quiz
           </button>
@@ -54,56 +62,56 @@ export default function Results() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-8">
+    <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl font-bold text-card-foreground mb-8 text-center">
             Your Vibe Profile 🎵
           </h1>
           
           {/* Personality Traits */}
           <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <div className="bg-white rounded-lg p-6 shadow-sm border">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">Your Personality</h3>
+            <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
+              <h3 className="text-xl font-semibold text-card-foreground mb-4">Your Personality</h3>
               <div className="space-y-3">
                 <div>
-                  <span className="text-sm text-gray-500">Mood Profile:</span>
-                  <p className="font-medium">{results.personalityTraits.moodProfile}</p>
+                  <span className="text-sm text-muted-foreground">Mood Profile:</span>
+                  <p className="font-medium text-card-foreground">{results.personalityTraits.moodProfile}</p>
                 </div>
                 <div>
-                  <span className="text-sm text-gray-500">Energy Level:</span>
-                  <p className="font-medium">{results.personalityTraits.energyLevel}</p>
+                  <span className="text-sm text-muted-foreground">Energy Level:</span>
+                  <p className="font-medium text-card-foreground">{results.personalityTraits.energyLevel}</p>
                 </div>
                 <div>
-                  <span className="text-sm text-gray-500">Social Style:</span>
-                  <p className="font-medium">{results.personalityTraits.socialStyle}</p>
+                  <span className="text-sm text-muted-foreground">Social Style:</span>
+                  <p className="font-medium text-card-foreground">{results.personalityTraits.socialStyle}</p>
                 </div>
                 <div>
-                  <span className="text-sm text-gray-500">Creativity Level:</span>
-                  <p className="font-medium">{results.personalityTraits.creativityLevel}</p>
+                  <span className="text-sm text-muted-foreground">Creativity Level:</span>
+                  <p className="font-medium text-card-foreground">{results.personalityTraits.creativityLevel}</p>
                 </div>
                 <div>
-                  <span className="text-sm text-gray-500">Lifestyle Pattern:</span>
-                  <p className="font-medium">{results.personalityTraits.lifestylePattern}</p>
+                  <span className="text-sm text-muted-foreground">Lifestyle Pattern:</span>
+                  <p className="font-medium text-card-foreground">{results.personalityTraits.lifestylePattern}</p>
                 </div>
               </div>
             </div>
 
             {/* Music Correlations */}
-            <div className="bg-white rounded-lg p-6 shadow-sm border">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">Music Alignment</h3>
-              <div className="space-y-4">
+            <div className="bg-card rounded-lg p-6 shadow-sm border border-border h-full">
+              <h3 className="text-xl font-semibold text-card-foreground mb-4">Music Alignment</h3>
+              <div className="flex flex-column flex-wrap justify-around h-full">
                 {Object.entries(results.musicCorrelations).map(([key, value]) => (
-                  <div key={key}>
+                  <div key={key} className="w-full">
                     <div className="flex justify-between text-sm mb-1">
-                      <span className="text-gray-600 capitalize">
+                      <span className="text-muted-foreground capitalize">
                         {key.replace(/([A-Z])/g, ' $1').replace('Music Match', '')}
                       </span>
-                      <span className="font-medium">{Math.round(value * 100)}%</span>
+                      <span className="font-medium text-card-foreground">{Math.round(value * 100)}%</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-muted rounded-full h-2">
                       <div 
-                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                        className="bg-primary h-2 rounded-full transition-all duration-300"
                         style={{ width: `${value * 100}%` }}
                       />
                     </div>
@@ -115,12 +123,12 @@ export default function Results() {
 
           {/* Insights */}
           {results.insights.length > 0 && (
-            <div className="bg-blue-50 rounded-lg p-6 mb-6">
-              <h3 className="text-xl font-semibold text-blue-800 mb-4">Key Insights</h3>
+            <div className="bg-primary/10 rounded-lg p-6 mb-6 border border-primary/20">
+              <h3 className="text-xl font-semibold text-primary mb-4">Key Insights</h3>
               <ul className="space-y-2">
                 {results.insights.map((insight, index) => (
-                  <li key={index} className="text-blue-700 flex items-start">
-                    <span className="text-blue-500 mr-2">•</span>
+                  <li key={index} className="text-primary flex items-start">
+                    <span className="text-primary mr-2">•</span>
                     {insight}
                   </li>
                 ))}
@@ -130,11 +138,11 @@ export default function Results() {
 
           {/* Recommendations */}
           {results.recommendations.length > 0 && (
-            <div className="bg-green-50 rounded-lg p-6 mb-6">
-              <h3 className="text-xl font-semibold text-green-800 mb-4">Personalized Recommendations</h3>
+            <div className="bg-green-500/10 rounded-lg p-6 mb-8 border border-green-500/20">
+              <h3 className="text-xl font-semibold text-green-500 mb-4">Personalized Recommendations</h3>
               <ul className="space-y-2">
                 {results.recommendations.map((recommendation, index) => (
-                  <li key={index} className="text-green-700 flex items-start">
+                  <li key={index} className="text-green-400 flex items-start">
                     <span className="text-green-500 mr-2">•</span>
                     {recommendation}
                   </li>
@@ -143,10 +151,39 @@ export default function Results() {
             </div>
           )}
 
+          {/* Music Analytics Dashboard */}
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-card-foreground mb-6 text-center">
+              Your Music Analytics 📊
+            </h2>
+            
+            {/* Top Cards */}
+            <TopCards />
+
+            {/* Charts Grid */}
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
+              <div className="xl:col-span-2">
+                <ListeningActivity />
+              </div>
+              <div>
+                <AudioFeaturesRadar />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <MoodDistribution />
+              <ListeningPatterns />
+            </div>
+
+            <div>
+              <AudioFeaturesCorrelation />
+            </div>
+          </div>
+
           <div className="text-center">
             <button
               onClick={() => navigate('/')}
-              className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors mr-4"
+              className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors mr-4"
             >
               Back to Home
             </button>
