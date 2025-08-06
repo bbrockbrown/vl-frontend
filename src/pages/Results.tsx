@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { QuizResult } from '@/api/quiz';
+import { AnalyticsProvider } from '@/context/AnalyticsContext';
 import TopCards from '@/components/dashboard/TopCards';
 import ListeningActivity from '@/components/dashboard/ListeningActivity';
 import AudioFeaturesRadar from '@/components/dashboard/AudioFeaturesRadar';
-import MoodDistribution from '@/components/dashboard/MoodDistribution';
 import ListeningPatterns from '@/components/dashboard/ListeningPatterns';
 import AudioFeaturesCorrelation from '@/components/dashboard/AudioFeaturesCorrelation';
+import ListeningActivityChart from '@/components/dashboard/ListeningActivityChart';
 
 export default function Results() {
   const navigate = useNavigate();
@@ -42,8 +43,6 @@ export default function Results() {
     );
   }
 
-  console.log("Stored results", results);
-
   if (!results) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -65,14 +64,14 @@ export default function Results() {
     <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold text-card-foreground mb-8 text-center">
-            Your Vibe Profile 🎵
+          <h1 className="!text-3xl font-bold text-card-foreground !mb-8 text-center">
+            Your Baseline Results 
           </h1>
           
           {/* Personality Traits */}
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
-              <h3 className="text-xl font-semibold text-card-foreground mb-4">Your Personality</h3>
+              <h3 className="text-xl font-semibold text-card-foreground !mb-4">Your Personality</h3>
               <div className="space-y-3">
                 <div>
                   <span className="text-sm text-muted-foreground">Mood Profile:</span>
@@ -99,7 +98,7 @@ export default function Results() {
 
             {/* Music Correlations */}
             <div className="bg-card rounded-lg p-6 shadow-sm border border-border h-full">
-              <h3 className="text-xl font-semibold text-card-foreground mb-4">Music Alignment</h3>
+              <h3 className="text-xl font-semibold text-card-foreground !mb-4">Music Alignment</h3>
               <div className="flex flex-column flex-wrap justify-around h-full">
                 {Object.entries(results.musicCorrelations).map(([key, value]) => (
                   <div key={key} className="w-full">
@@ -121,63 +120,58 @@ export default function Results() {
             </div>
           </div>
 
-          {/* Insights */}
-          {results.insights.length > 0 && (
-            <div className="bg-primary/10 rounded-lg p-6 mb-6 border border-primary/20">
-              <h3 className="text-xl font-semibold text-primary mb-4">Key Insights</h3>
-              <ul className="space-y-2">
-                {results.insights.map((insight, index) => (
-                  <li key={index} className="text-primary flex items-start">
-                    <span className="text-primary mr-2">•</span>
-                    {insight}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          {/* Insights and Recommendations Row */}
+          {(results.insights.length > 0 || results.recommendations.length > 0) && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              {/* Key Insights */}
+              {results.insights.length > 0 && (
+                <div className="bg-primary/10 rounded-lg p-6 border border-primary/20">
+                  <h3 className="text-xl font-semibold text-primary !mb-4">Key Insights</h3>
+                  <ul className="space-y-2">
+                    {results.insights.map((insight, index) => (
+                      <li key={index} className="text-primary flex items-start">
+                        <span className="text-primary mr-2">•</span>
+                        {insight}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-          {/* Recommendations */}
-          {results.recommendations.length > 0 && (
-            <div className="bg-green-500/10 rounded-lg p-6 mb-8 border border-green-500/20">
-              <h3 className="text-xl font-semibold text-green-500 mb-4">Personalized Recommendations</h3>
-              <ul className="space-y-2">
-                {results.recommendations.map((recommendation, index) => (
-                  <li key={index} className="text-green-400 flex items-start">
-                    <span className="text-green-500 mr-2">•</span>
-                    {recommendation}
-                  </li>
-                ))}
-              </ul>
+              {/* Personalized Recommendations */}
+              {results.recommendations.length > 0 && (
+                <div className="bg-green-500/10 rounded-lg p-6 border border-green-500/20">
+                  <h3 className="text-xl font-semibold text-green-500 !mb-4">Personalized Recommendations</h3>
+                  <ul className="space-y-2">
+                    {results.recommendations.map((recommendation, index) => (
+                      <li key={index} className="text-green-400 flex items-start">
+                        <span className="text-green-500 mr-2">•</span>
+                        {recommendation}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           )}
 
           {/* Music Analytics Dashboard */}
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-card-foreground mb-6 text-center">
+            <h2 className="text-2xl font-bold text-card-foreground !mb-6 text-center">
               Your Music Analytics 📊
             </h2>
             
-            {/* Top Cards */}
-            <TopCards />
+            <AnalyticsProvider timeRange="30d">
+              {/* Top Cards */}
+              <TopCards />
+              <AudioFeaturesRadar />
 
-            {/* Charts Grid */}
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
-              <div className="xl:col-span-2">
-                <ListeningActivity />
-              </div>
+              <ListeningActivityChart />
+
               <div>
-                <AudioFeaturesRadar />
+                <AudioFeaturesCorrelation />
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-              <MoodDistribution />
-              <ListeningPatterns />
-            </div>
-
-            <div>
-              <AudioFeaturesCorrelation />
-            </div>
+            </AnalyticsProvider>
           </div>
 
           <div className="text-center">

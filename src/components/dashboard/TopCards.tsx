@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
 import { IconifyIcon } from '@/components/dashboard/IconifyIcon';
-import { getAnalyticsOverview, type AnalyticsOverview } from '@/api/analytics';
+import { useAnalytics } from '@/context/AnalyticsContext';
 
 interface TopCardProps {
   icon: string;
@@ -14,8 +13,8 @@ const TopCard = ({ icon, title, value, rate, isUp }: TopCardProps) => {
   return (
     <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
       <div className="flex justify-between items-start mb-4">
-        <div className="flex items-center space-x-3">
-          <div className="p-2 bg-primary/10 rounded-lg">
+        <div className="flex items-center x-3">
+          <div className="flex p-2 bg-primary/10 rounded-lg justify-center items-center">
             <IconifyIcon icon={icon} className="w-6 h-6 text-primary" />
           </div>
           <div>
@@ -33,26 +32,7 @@ const TopCard = ({ icon, title, value, rate, isUp }: TopCardProps) => {
 };
 
 const TopCards = () => {
-  const [analyticsData, setAnalyticsData] = useState<AnalyticsOverview | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchAnalytics = async () => {
-      try {
-        setLoading(true);
-        const data = await getAnalyticsOverview('30d');
-        setAnalyticsData(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load analytics');
-        console.error('Error fetching analytics:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAnalytics();
-  }, []);
+  const { data: analyticsData, loading, error } = useAnalytics();
 
   if (loading) {
     return (
@@ -118,9 +98,9 @@ const TopCards = () => {
     {
       id: 4,
       title: 'Avg Energy',
-      value: overview.avgEnergy.toString(),
-      rate: '2.1%',
-      isUp: false,
+      value: `${Math.round(overview.avgEnergy * 100)}%`,
+      rate: `${overview.energyChange}%`,
+      isUp: overview.energyChange >= 0,
       icon: 'mdi:lightning-bolt',
     },
   ];

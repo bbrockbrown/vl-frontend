@@ -194,44 +194,49 @@ export default function Quiz({}: QuizProps) {
 
   // Handle Spotify callback success
   useEffect(() => {
-    if (success === 'true' && !hasSubmitted.current) {
-      console.log('Spotify authentication successful, submitting quiz answers...');
-      hasSubmitted.current = true; // Mark as submitted immediately
+    const callBackSuccess = async () => {
+      if (success === 'true' && !hasSubmitted.current) {
+        console.log('Spotify authentication successful, submitting quiz answers...');
+        hasSubmitted.current = true; // Mark as submitted immediately
       
-      // Get saved quiz answers from localStorage
-      const savedAnswers = localStorage.getItem(QUIZ_ANSWERS_KEY);
-      if (savedAnswers) {
-        try {
-          const answers = JSON.parse(savedAnswers);
+        // Get saved quiz answers from localStorage
+        const savedAnswers = localStorage.getItem(QUIZ_ANSWERS_KEY);
+        if (savedAnswers) {
+          try {
+            const answers = JSON.parse(savedAnswers);
           
-          // Submit quiz answers automatically
-          handleSubmitQuizAnswers(answers);
+            // Submit quiz answers automatically
+            await handleSubmitQuizAnswers(answers);
           
-          // Clear the URL parameters
-          navigate('/quiz', { replace: true });
-        } catch (error) {
-          console.error('Error parsing saved quiz answers:', error);
-          hasSubmitted.current = false; // Reset on error so user can retry
+            // Clear the URL parameters
+            navigate('/quiz/results', { replace: true });
+          } catch (error) {
+            console.error('Error parsing saved quiz answers:', error);
+            hasSubmitted.current = false; // Reset on error so user can retry
+            setQuizState(prev => ({
+              ...prev,
+              error: 'Failed to load saved quiz answers'
+            }));
+          }
+        } else {
+          console.error('No saved quiz answers found');
+          hasSubmitted.current = false; // Reset on error
           setQuizState(prev => ({
             ...prev,
-            error: 'Failed to load saved quiz answers'
+            error: 'No quiz answers found. Please take the quiz again.'
           }));
         }
-      } else {
-        console.error('No saved quiz answers found');
-        hasSubmitted.current = false; // Reset on error
+      } else if (error && !hasSubmitted.current) {
+        console.error('Spotify authentication failed:', error);
         setQuizState(prev => ({
           ...prev,
-          error: 'No quiz answers found. Please take the quiz again.'
+          error: `Spotify authentication failed: ${error}`
         }));
       }
-    } else if (error && !hasSubmitted.current) {
-      console.error('Spotify authentication failed:', error);
-      setQuizState(prev => ({
-        ...prev,
-        error: `Spotify authentication failed: ${error}`
-      }));
-    }
+    };
+
+    callBackSuccess();
+    
   }, [success, error, navigate]);
 
   const handleSubmitQuizAnswers = async (answers: QuizAnswer[]) => {

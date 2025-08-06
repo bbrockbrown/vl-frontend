@@ -10,6 +10,7 @@ export interface AnalyticsOverview {
     avgEnergy: number;
     tracksChange: number;
     hoursChange: number;
+    energyChange: number;
     daysChange: number;
   };
   timeRange: string;
@@ -61,6 +62,7 @@ export interface AudioFeaturesCorrelation {
     feature2: string;
     correlation: number;
   };
+  mostInfluential: string;
   totalRelationships: number;
   timeRange: string;
 }
@@ -124,4 +126,65 @@ export const getAudioFeaturesCorrelation = async (timeRange = '30d'): Promise<Au
   }
 
   return response.json();
+};
+
+export const getUserTrackIds = async (timeRange = '30d', limit = 50): Promise<{ trackIds: string[]; timeRange: string; totalTracks: number; uniqueTracks: number }> => {
+  const response = await fetch(`${API_BASE_URL}/analytics/user-track-ids?timeRange=${timeRange}&limit=${limit}`, {
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch user track IDs');
+  }
+
+  return response.json();
 }; 
+
+export const getTrackAudioFeatures = async (trackIds: string[]) => {
+  const queryParams = new URLSearchParams();
+  trackIds.forEach(id => queryParams.append('trackIds', id));
+  
+  const response = await fetch(`${API_BASE_URL}/spotify/multiple-audio-features?${queryParams}`, {
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch track audio features');
+  }
+
+  return response.json();
+}
+
+// New centralized analytics service
+export interface ConsolidatedAnalytics {
+  overview: AnalyticsOverview['overview'];
+  moodDistribution: MoodDistribution['moodDistribution'];
+  avgEnergy: number;
+  avgValence: number;
+  listeningActivity: ListeningActivity['monthlyData'];
+  listeningPatterns: {
+    timeOfDay: ListeningPatterns['timeOfDay'];
+    dayOfWeek: ListeningPatterns['dayOfWeek'];
+    peakTime: string;
+    peakDay: string;
+  };
+  audioFeaturesCorrelation: AudioFeaturesCorrelation;
+  audioFeaturesRadar: Array<{
+    name: string;
+    value: number;
+    color: string;
+  }>;
+  timeRange: string;
+}
+
+export const getConsolidatedAnalytics = async (timeRange = '30d'): Promise<ConsolidatedAnalytics> => {
+  const response = await fetch(`${API_BASE_URL}/analytics/consolidated?timeRange=${timeRange}`, {
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch consolidated analytics');
+  }
+
+  return response.json();
+};

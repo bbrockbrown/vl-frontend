@@ -226,6 +226,41 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, figure {
   background: #ccc;
 }
 
+.MuiChartsSurface-root {
+  overflow: visible !important;
+}
+
+/* Fix for MUI RadarChart text clipping */
+.MuiChartsSurface-root svg {
+  overflow: visible !important;
+}
+
+.MuiChartsSurface-root svg text {
+  overflow: visible !important;
+  z-index: 1000 !important;
+}
+
+.MuiChartsSurface-root svg tspan {
+  overflow: visible !important;
+  z-index: 1000 !important;
+}
+
+/* Target the specific chart container */
+.MuiChartsSurface-root .MuiChartsAxis-label {
+  overflow: visible !important;
+  z-index: 1000 !important;
+}
+
+.MuiChartsSurface-root .MuiChartsAxis-labelGroup {
+  overflow: visible !important;
+  z-index: 1000 !important;
+}
+
+/* Ensure no clipping on any chart elements */
+.MuiChartsSurface-root * {
+  overflow: visible !important;
+}
+
 .ripple {
   position: absolute;
   border-radius: 50%;

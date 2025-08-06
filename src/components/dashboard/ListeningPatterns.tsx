@@ -1,27 +1,7 @@
-import { useState, useEffect } from 'react';
-import { getListeningPatterns, type ListeningPatterns } from '@/api/analytics';
+import { useAnalytics } from '@/context/AnalyticsContext';
 
 export default function ListeningPatterns() {
-  const [data, setData] = useState<ListeningPatterns | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const response = await getListeningPatterns('30d');
-        setData(response);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load listening patterns');
-        console.error('Error fetching listening patterns:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { data, loading, error } = useAnalytics();
 
   if (loading) {
     return (
@@ -73,7 +53,8 @@ export default function ListeningPatterns() {
     return null;
   }
 
-  const { timeOfDay, dayOfWeek, peakTime, peakDay } = data;
+  const { listeningPatterns } = data;
+  const { timeOfDay, dayOfWeek, peakTime, peakDay } = listeningPatterns;
 
   const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 

@@ -69,7 +69,7 @@ export default function Navbar() {
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
-    console.log("Toggle from", isMobileMenuOpen)
+    console.log('Toggle from', isMobileMenuOpen);
   };
 
   const closeMobileMenu = () => {
@@ -80,10 +80,7 @@ export default function Navbar() {
     <>
       <div className='flex flex-row items-center justify-between w-full max-w-[1400px] py-5 px-4 md:px-6'>
         {/* Logo */}
-        <Link 
-          className='relative'
-          to='/'
-        >
+        <Link className='relative' to='/'>
           <LightLogo width='150' height='50' />
         </Link>
 
@@ -93,7 +90,7 @@ export default function Navbar() {
           className='bg-[#14161a] text-white hidden md:block'
         >
           <NavigationMenuList>
-          <NavigationMenuItem>
+            <NavigationMenuItem>
               <NavigationMenuTrigger>Home</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className='grid w-[250px] gap-4'>
@@ -118,109 +115,29 @@ export default function Navbar() {
               <NavigationMenuTrigger>About</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className='grid gap-2 md:w-[400px] lg:w-[300px]'>
-                    <NavigationMenuLink asChild>
-                      <a
-                        className='from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md'
-                        href='/'
-                      >
-                        <div className='flex flex-row items-center gap-0.5 mt-4 mb-2 text-lg font-medium w-full'>
-                          <span>Vibelog</span>
-                          <LightIconLogo width="25" height="25" className="!w-[22.5px] !h-[22.5px]" />
-                        </div>
-                        <p className='text-muted-foreground text-sm leading-tight'>
-                          A way for you to see how your emotions correlate to listening activity, backed 
-                          by real data. <br/>
-                          Click to read more about how we do this.
-                        </p>
-                      </a>
-                    </NavigationMenuLink>          
+                  <NavigationMenuLink asChild>
+                    <a
+                      className='from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md'
+                      href='/'
+                    >
+                      <div className='flex flex-row items-center gap-0.5 mt-4 mb-2 text-lg font-medium w-full'>
+                        <span>Vibelog</span>
+                        <LightIconLogo
+                          width='25'
+                          height='25'
+                          className='!w-[22.5px] !h-[22.5px]'
+                        />
+                      </div>
+                      <p className='text-muted-foreground text-sm leading-tight'>
+                        A way for you to see how your emotions correlate to
+                        listening activity, backed by real data. <br />
+                        Click to read more about how we do this.
+                      </p>
+                    </a>
+                  </NavigationMenuLink>
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
-            {/* <NavigationMenuItem>
-              <NavigationMenuTrigger>Components</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className='grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px]'>
-                  {components.map((component) => (
-                    <ListItem
-                      key={component.title}
-                      title={component.title}
-                      href={component.href}
-                    >
-                      {component.description}
-                    </ListItem>
-                  ))}
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem> */}
-            {/* <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
-                <Link to='/docs'>Docs</Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem> */}
-            {/* <NavigationMenuItem>
-              <NavigationMenuTrigger>List</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className='grid w-[300px] gap-4'>
-                  <li>
-                    <NavigationMenuLink asChild>
-                      <Link to='#'>
-                        <div className='font-medium'>Components</div>
-                        <div className='text-muted-foreground'>
-                          Browse all components in the library.
-                        </div>
-                      </Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                      <Link to='#'>
-                        <div className='font-medium'>Documentation</div>
-                        <div className='text-muted-foreground'>
-                          Learn how to use the library.
-                        </div>
-                      </Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                      <Link to='#'>
-                        <div className='font-medium'>Blog</div>
-                        <div className='text-muted-foreground'>
-                          Read our latest blog posts.
-                        </div>
-                      </Link>
-                    </NavigationMenuLink>
-                  </li>
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem> */}
-            {/* <NavigationMenuItem>
-              <NavigationMenuTrigger>With Icon</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className='grid w-[200px] gap-4'>
-                  <li>
-                    <NavigationMenuLink asChild>
-                      <Link to='#' className='flex-row items-center gap-2'>
-                        <CircleHelpIcon />
-                        Backlog
-                      </Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                      <Link to='#' className='flex-row items-center gap-2'>
-                        <CircleIcon />
-                        To Do
-                      </Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                      <Link to='#' className='flex-row items-center gap-2'>
-                        <CircleCheckIcon />
-                        Done
-                      </Link>
-                    </NavigationMenuLink>
-                  </li>
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem> */}
           </NavigationMenuList>
         </NavigationMenu>
 
@@ -258,9 +175,7 @@ export default function Navbar() {
               {/* Mobile Menu Header */}
               <div className='flex items-center h-[90px] justify-between px-6 py-5 border-b border-gray-700'>
                 <span className='text-white font-semibold text-lg'>Menu</span>
-                <button 
-                  onClick={closeMobileMenu}
-                >
+                <button onClick={closeMobileMenu}>
                   <X size={24} />
                 </button>
               </div>
@@ -290,10 +205,19 @@ export default function Navbar() {
 
               {/* Mobile Login/Signup Buttons */}
               <div className='p-6 border-t border-gray-700 space-y-3'>
-              <GradientBorderButton fromColor='#ca3dfd' toColor='#10c3ff' className='w-full font-medium transition' onClick={closeMobileMenu}>
+                <GradientBorderButton
+                  fromColor='#ca3dfd'
+                  toColor='#10c3ff'
+                  className='w-full font-medium transition'
+                  onClick={closeMobileMenu}
+                >
                   Sign Up
                 </GradientBorderButton>
-                <Button color='#CB3CFF' className='border border-white w-full' onClick={closeMobileMenu}>
+                <Button
+                  color='#CB3CFF'
+                  className='border border-white w-full'
+                  onClick={closeMobileMenu}
+                >
                   Login
                 </Button>
               </div>
