@@ -1,8 +1,12 @@
 import { useAnalytics } from '@/context/AnalyticsContext';
-import { LineChart } from '@mui/x-charts/LineChart';
+import { useMemo } from 'react';
+import { graphic } from 'echarts';
+import * as echarts from 'echarts/core';
+import ReactEchart from '@/components/base/ReactEchart';
 
 export default function ListeningActivityChart() {
   const { data, loading, error } = useAnalytics();
+  console.log("received data from context", data?.listeningActivity);
 
   if (loading) {
     return (
@@ -39,19 +43,143 @@ export default function ListeningActivityChart() {
   console.log('listeningActivity', listeningActivity)
   console.log('listeningPatterns', listeningPatterns)
 
-  // Prepare data for the line chart
-  const chartData = listeningActivity.map((item, index) => ({
-    month: item.month,
-    tracks: item.tracks,
-    hours: item.hours,
-    id: index,
-  }));
-
   // Calculate totals for summary
   const totalTracks = listeningActivity.reduce((sum, d) => sum + d.tracks, 0);
   const totalHours = listeningActivity.reduce((sum, d) => sum + d.hours, 0);
   const avgTracksPerMonth = Math.round(totalTracks / listeningActivity.length);
   const avgHoursPerMonth = Math.round((totalHours / listeningActivity.length) * 10) / 10;
+
+  // Prepare data for ECharts
+  const xAxisData = listeningActivity.map(item => item.month);
+  const tracksData = listeningActivity.map(item => item.tracks);
+  const hoursData = listeningActivity.map(item => item.hours);
+
+  const option = useMemo(
+    () => ({
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'none',
+        },
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        borderColor: 'transparent',
+        textStyle: {
+          color: '#ffffff',
+          fontSize: 12,
+        },
+      },
+      grid: {
+        top: 40,
+        bottom: 40,
+        left: 50,
+        right: 70,
+      },
+      xAxis: {
+        type: 'category',
+        data: xAxisData,
+        axisTick: {
+          show: false,
+        },
+        axisLine: {
+          show: false,
+        },
+        axisLabel: {
+          margin: 10,
+          color: '#9CA3AF',
+          fontSize: 11,
+        },
+      },
+      yAxis: [
+        {
+          type: 'value',
+          name: 'Tracks',
+          position: 'left',
+          axisLabel: {
+            color: '#9CA3AF',
+            fontSize: 11,
+          },
+          splitLine: {
+            show: false,
+          },
+          axisLine: {
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+        },
+        {
+          type: 'value',
+          name: 'Hours',
+          position: 'right',
+          axisLabel: {
+            color: '#9CA3AF',
+            fontSize: 11,
+          },
+          splitLine: {
+            show: false,
+          },
+          axisLine: {
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+        },
+      ],
+      series: [
+        {
+          name: 'Tracks',
+          data: tracksData,
+          type: 'line',
+          smooth: true,
+          showSymbol: false,
+          yAxisIndex: 0,
+          lineStyle: {
+            color: '#3B82F6',
+            width: 2,
+          },
+          areaStyle: {
+            color: new graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgba(59, 130, 246, 0.1)',
+              },
+              {
+                offset: 1,
+                color: 'rgba(59, 130, 246, 0)',
+              },
+            ]),
+          },
+        },
+        {
+          name: 'Hours',
+          data: hoursData,
+          type: 'line',
+          smooth: true,
+          showSymbol: false,
+          yAxisIndex: 1,
+          lineStyle: {
+            color: '#10B981',
+            width: 2,
+          },
+          areaStyle: {
+            color: new graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgba(16, 185, 129, 0.1)',
+              },
+              {
+                offset: 1,
+                color: 'rgba(16, 185, 129, 0)',
+              },
+            ]),
+          },
+        },
+      ],
+    }),
+    [xAxisData, tracksData, hoursData],
+  );
 
   return (
     <div className="bg-card rounded-lg p-6 shadow-sm border border-border mb-8">
@@ -60,84 +188,9 @@ export default function ListeningActivityChart() {
         <p className="text-sm text-muted-foreground">Your music consumption over the past month</p>
       </div>
 
-      {/* Line Chart */}
-      <div className="mb-6">
-        <LineChart
-          dataset={chartData}
-          xAxis={[
-            {
-              scaleType: 'band',
-              dataKey: 'month',
-              tickLabelPlacement: 'middle',
-              label: 'Days',
-            },
-          ]}
-          yAxis={[
-            {
-              scaleType: 'linear',
-              label: 'Tracks',
-              color: '#3B82F6',
-            },
-            {
-              scaleType: 'linear',
-              label: 'Hours',
-              color: '#10B981',
-              position: 'right',
-            },
-          ]}
-          series={[
-            {
-              dataKey: 'tracks',
-              label: 'Tracks',
-              color: '#3B82F6',
-              yAxisKey: 'left',
-            },
-            {
-              dataKey: 'hours',
-              label: 'Hours',
-              color: '#10B981',
-              yAxisKey: 'right',
-            },
-          ]}
-          height={300}
-          sx={{
-            '& .MuiChartsAxis-line': {
-              stroke: 'white',
-            },
-            '& .MuiChartsAxis-tick': {
-              stroke: 'white',
-            },
-            '& .MuiChartsAxis-tickLabel': {
-              color: 'white !important',
-              fill: 'white',
-              fontSize: '12px',
-
-              '& tspan': {
-                fill: 'white !important',
-                color: 'white !important',
-              }
-            },
-            '& .MuiChartsAxis-label': {
-              fill: 'white !important',
-              color: 'white',
-              fontSize: '14px',
-            },
-            '& .MuiChartsLegend-root': {
-              '& .MuiChartsLegend-label': {
-                color: 'white',
-                fill: 'white',
-              },
-            },
-            '& .MuiChartsAxis-root': {
-              '& .MuiChartsAxis-line': {
-                stroke: 'white !important',
-              },
-              '& .MuiChartsAxis-tick': {
-                stroke: 'white !important',
-              },
-            },
-          }}
-        />
+      {/* ECharts Line Chart */}
+      <div className="mb-6" style={{ height: '300px' }}>
+        <ReactEchart echarts={echarts} option={option} sx={{ height: '100% !important' }} />
       </div>
 
       {/* Summary Stats */}

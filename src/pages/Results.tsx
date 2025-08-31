@@ -3,9 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import type { QuizResult } from '@/api/quiz';
 import { AnalyticsProvider } from '@/context/AnalyticsContext';
 import TopCards from '@/components/dashboard/TopCards';
-import ListeningActivity from '@/components/dashboard/ListeningActivity';
 import AudioFeaturesRadar from '@/components/dashboard/AudioFeaturesRadar';
-import ListeningPatterns from '@/components/dashboard/ListeningPatterns';
 import AudioFeaturesCorrelation from '@/components/dashboard/AudioFeaturesCorrelation';
 import ListeningActivityChart from '@/components/dashboard/ListeningActivityChart';
 
@@ -97,9 +95,9 @@ export default function Results() {
             </div>
 
             {/* Music Correlations */}
-            <div className="bg-card rounded-lg p-6 shadow-sm border border-border h-full">
+            <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
               <h3 className="text-xl font-semibold text-card-foreground !mb-4">Music Alignment</h3>
-              <div className="flex flex-column flex-wrap justify-around h-full">
+              <div className="flex flex-column flex-wrap justify-around gap-5 md:h-[75%] md:mt-5">
                 {Object.entries(results.musicCorrelations).map(([key, value]) => (
                   <div key={key} className="w-full">
                     <div className="flex justify-between text-sm mb-1">
@@ -174,21 +172,18 @@ export default function Results() {
             </AnalyticsProvider>
           </div>
 
-          <div className="text-center">
+          <div className="flex md:flex-row flex-col text-center md:gap-0 gap-3">
             <button
               onClick={() => navigate('/')}
-              className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors mr-4"
+              className="px-8 py-3 w-full bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors mr-4"
             >
               Back to Home
             </button>
             <button
-              onClick={() => {
-                // TODO: Save results to user profile
-                console.log('Save results to user profile');
-              }}
-              className="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              onClick={() => navigate('/profile')}
+              className="px-8 w-full py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
             >
-              Save to My Profile
+              View My Profile
             </button>
           </div>
         </div>

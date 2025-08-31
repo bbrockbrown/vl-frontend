@@ -5,6 +5,7 @@ import QuizNavbar from '@/components/layout/QuizNavbar';
 import Home from '@/pages/Home';
 import Quiz from '@/pages/Quiz';
 import Results from '@/pages/Results';
+import Profile from '@/pages/Profile';
 import theme from './theme/theme';
 import { ThemeProvider } from '@emotion/react';
 import LoadingResults from '@/pages/LoadingResults';
@@ -15,6 +16,7 @@ function AppContent() {
     <Routes>
       <Route path='/' element={<Navbar />}>
         <Route index element={<Home />} />
+        <Route path='profile' element={<Profile />} />
         <Route path='credits' element={<Credits />} />
       </Route>
       <Route path='/quiz' element={<QuizNavbar />}>

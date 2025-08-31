@@ -14,7 +14,7 @@ const TopCard = ({ icon, title, value, rate, isUp }: TopCardProps) => {
     <div className="bg-card rounded-lg p-6 shadow-sm border border-border">
       <div className="flex justify-between items-start mb-4">
         <div className="flex items-center x-3">
-          <div className="flex p-2 bg-primary/10 rounded-lg justify-center items-center">
+          <div className="flex p-2 bg-primary/10 rounded-lg justify-center items-center mr-3">
             <IconifyIcon icon={icon} className="w-6 h-6 text-primary" />
           </div>
           <div>

@@ -1,69 +1,42 @@
-# React + TypeScript + Vite
+# 🎵 Vibelog
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Your Spotify listening habits, visualized.**
 
-Currently, two official plugins are available:
+A music analytics dashboard that connects to your Spotify account and shows you beautiful insights about your listening patterns.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## What's implemented
 
-## Expanding the ESLint configuration
+- **Spotify OAuth login** - authenticate with your Spotify account
+- **Analytics dashboard** - beautiful charts showing your music data
+- **Listening activity tracking** - see your daily/monthly music consumption
+- **Audio features analysis** - discover patterns in your music taste
+- **Profile page** - view your personalized music analytics
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Frontend**: React + TypeScript + Tailwind CSS + ECharts
+- **Backend**: Node.js + Express + MongoDB
+- **Integration**: Spotify Web API for listening data
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Quick Start
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# Install dependencies
+cd frontend && npm install
+cd ../backend && npm install
+
+# Set up environment variables (Spotify app credentials + MongoDB)
+# See .env.example files
+
+# Run the app
+npm run dev  # in both frontend/ and backend/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Current Features
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Spotify login flow** - OAuth integration working
+- **Real-time analytics** - pulls your actual listening data  
+- **Beautiful charts** - smooth lines with gradients using ECharts
+- **Profile dashboard** - duplicate of results page for logged-in users
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Built for a hackathon, now actually useful for tracking your music habits.
