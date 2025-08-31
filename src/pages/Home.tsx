@@ -25,10 +25,10 @@ export default function Home() {
           minHeight: '100vh',
           color: '#fff',
           px: { xs: 2, md: 0 },
-          pt: 8,
           position: 'relative',
           overflow: 'hidden',
         }}
+        className='!md:pt-8 !pt-5'
       >
         {/* Hero Section with Professional Layout */}
         <Box
@@ -36,15 +36,16 @@ export default function Home() {
             display: 'flex',
             flexDirection: { xs: 'column', md: 'row' },
             alignItems: 'center',
-            justifyContent: 'space-between',
-            pt: { xs: 4, md: 8 },
+            justifyContent: {xs: 'center', md: 'space-between'},
+            pt: { xs: 2, md: 8 },
             pb: { xs: 6, md: 12 },
             position: 'relative',
             zIndex: 1,
-            gap: { xs: 4, md: 8 },
+            gap: { xs: 0, md: 8 },
             maxWidth: 1200,
             mx: 'auto',
             px: { xs: 2, md: 4 },
+            marginBottom: { xs: 5, md: 10 }
           }}
         >
           {/* Main Blob for Hero Background */}
@@ -53,8 +54,8 @@ export default function Home() {
             src={BigClearBlob}
             sx={{
               position: 'absolute',
-              top: { xs: '-10%', md: '-5%' },
-              left: { xs: '-15%', md: '-8%' },
+              top: { xs: '5%', md: '-5%' },
+              left: { xs: '-5%', md: '-8%' },
               width: { xs: '70%', md: '50%' },
               height: 'auto',
               zIndex: -1,
@@ -132,7 +133,6 @@ export default function Home() {
               alignItems: 'center',
               position: 'relative',
               flexDirection: 'column',
-              minHeight: { xs: '300px', md: '400px' },
             }}
           >
             {/* Large background blobs to create "lit up" effect */}
@@ -372,43 +372,99 @@ export default function Home() {
             </Typography>
             
             {/* Stats Grid with Enhanced Design */}
-            <Grid container spacing={3} sx={{ mt: 4 }}>
-              <Grid size={{ xs: 6, md: 3 }}>
-                <Box sx={{ textAlign: 'center', py: 3 }}>
-                  <Typography variant='h4' sx={{ fontWeight: 700, mb: 1, color: '#ca3dfd' }}>
+            <Grid container spacing={{ xs: 2, md: 3 }} sx={{ mt: 4 }}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Box sx={{ textAlign: 'center', py: { xs: 2, md: 3 } }}>
+                  <Typography 
+                    variant='h4' 
+                    sx={{ 
+                      fontWeight: 700, 
+                      mb: 1, 
+                      color: '#ca3dfd',
+                      fontSize: { xs: 20, sm: 24, md: 28 },
+                    }}
+                  >
                     Personality Quiz
                   </Typography>
-                  <Typography variant='body2' sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                  <Typography 
+                    variant='body2' 
+                    sx={{ 
+                      color: 'rgba(255,255,255,0.7)',
+                      fontSize: { xs: 14, sm: 16, md: 18 },
+                    }}
+                  >
                     10 questions about you
                   </Typography>
                 </Box>
               </Grid>
-              <Grid size={{ xs: 6, md: 3 }}>
-                <Box sx={{ textAlign: 'center', py: 3 }}>
-                  <Typography variant='h4' sx={{ fontWeight: 700, mb: 1, color: '#10c3ff' }}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Box sx={{ textAlign: 'center', py: { xs: 2, md: 3 } }}>
+                  <Typography 
+                    variant='h4' 
+                    sx={{ 
+                      fontWeight: 700, 
+                      mb: 1, 
+                      color: '#10c3ff',
+                      fontSize: { xs: 20, sm: 24, md: 28 },
+                    }}
+                  >
                     Spotify Analysis
                   </Typography>
-                  <Typography variant='body2' sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                  <Typography 
+                    variant='body2' 
+                    sx={{ 
+                      color: 'rgba(255,255,255,0.7)',
+                      fontSize: { xs: 14, sm: 16, md: 18 },
+                    }}
+                  >
                     Your listening patterns
                   </Typography>
                 </Box>
               </Grid>
-              <Grid size={{ xs: 6, md: 3 }}>
-                <Box sx={{ textAlign: 'center', py: 3 }}>
-                  <Typography variant='h4' sx={{ fontWeight: 700, mb: 1, color: '#ca3dfd' }}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Box sx={{ textAlign: 'center', py: { xs: 2, md: 3 } }}>
+                  <Typography 
+                    variant='h4' 
+                    sx={{ 
+                      fontWeight: 700, 
+                      mb: 1, 
+                      color: '#ca3dfd',
+                      fontSize: { xs: 20, sm: 24, md: 28 },
+                    }}
+                  >
                     Music Correlation
                   </Typography>
-                  <Typography variant='body2' sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                  <Typography 
+                    variant='body2' 
+                    sx={{ 
+                      color: 'rgba(255,255,255,0.7)',
+                      fontSize: { xs: 14, sm: 16, md: 18 },
+                    }}
+                  >
                     Personality + music match
                   </Typography>
                 </Box>
               </Grid>
-              <Grid size={{ xs: 6, md: 3 }}>
-                <Box sx={{ textAlign: 'center', py: 3 }}>
-                  <Typography variant='h4' sx={{ fontWeight: 700, mb: 1, color: '#10c3ff' }}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Box sx={{ textAlign: 'center', py: { xs: 2, md: 3 } }}>
+                  <Typography 
+                    variant='h4' 
+                    sx={{ 
+                      fontWeight: 700, 
+                      mb: 1, 
+                      color: '#10c3ff',
+                      fontSize: { xs: 20, sm: 24, md: 28 },
+                    }}
+                  >
                     Personalized Insights
                   </Typography>
-                  <Typography variant='body2' sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                  <Typography 
+                    variant='body2' 
+                    sx={{ 
+                      color: 'rgba(255,255,255,0.7)',
+                      fontSize: { xs: 14, sm: 16, md: 18 },
+                    }}
+                  >
                     Your unique music profile
                   </Typography>
                 </Box>

@@ -1,10 +1,11 @@
 import { getApiUrl } from '@/lib/utils';
 import { useState, useEffect } from 'react';
+import type { SpotifyUser } from '@/api/spotify';
 
 const API_BASE_URL = getApiUrl();
 
 export const useUser = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<SpotifyUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

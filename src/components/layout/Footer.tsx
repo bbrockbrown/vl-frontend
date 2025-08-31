@@ -11,18 +11,6 @@ export default function Footer() {
           <div className='mb-6 md:mb-0 text-center md:text-start'>
             <nav className='space-y-2'>
               <Link 
-                to='/about' 
-                className='block text-white hover:text-gray-300 transition-colors'
-              >
-                About Us
-              </Link>
-              <Link 
-                to='/contact' 
-                className='block text-white hover:text-gray-300 transition-colors'
-              >
-                Reach out
-              </Link>
-              <Link 
                 to='/credits' 
                 className='block text-white hover:text-gray-300 transition-colors'
               >
@@ -41,7 +29,7 @@ export default function Footer() {
         <div className='flex flex-col md:flex-row justify-between w-full items-center pt-6 border-t border-gray-700'>
           <div className='mb-4 md:mb-0'>
             <Link 
-              to='/terms' 
+              to='/' 
               className='text-sm text-gray-400 hover:text-white transition-colors'
             >
               Terms of Use & Privacy Policy
